@@ -1,5 +1,5 @@
 {
-    "name": "lcfvs/phpdom",
+    "name": "dom-arch/php-dom",
     "description": "A PHP DOM tool, based on a revised version of php-selector",
     "type": "library",
     "require": {

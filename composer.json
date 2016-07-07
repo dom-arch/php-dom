@@ -1,8 +1,6 @@
 {
     "name": "dom-arch/php-dom",
     "description": "A PHP DOM tool, based on a revised version of php-selector",
-    "version": "0.9.1",
-    "minimum-stability" : "dev",
     "require": {
         "php": ">=5.4"
     },

@@ -25,7 +25,7 @@ class Document extends \DOMDocument
         '\\DOMDocumentFragment' => '\\PHPDOM\\HTML\\DocumentFragment'
     ];
 
-    private $_unbreakables = [
+    protected $_unbreakables = [
         'a', 'abbr', 'acronym', 'area', 'audio', 'b', 'base', 'bdi', 'bdo',
         'big', 'body', 'br', 'button', 'canvas', 'cite', 'code', 'col',
         'colgroup', 'command', 'datalist', 'del', 'dfn', 'dl', 'em', 'embed',

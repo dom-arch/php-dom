@@ -173,4 +173,9 @@ class Element extends \DOMElement
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return substr($this->ownerDocument->saveHTML($this), 0, -1);
+    }
 }

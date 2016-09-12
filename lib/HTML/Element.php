@@ -176,6 +176,6 @@ class Element extends \DOMElement
 
     public function __toString()
     {
-        return substr($this->ownerDocument->saveHTML($this), 0, -1);
+        return $this->ownerDocument->saveHTML($this);
     }
 }

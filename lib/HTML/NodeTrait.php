@@ -22,13 +22,16 @@ trait NodeTrait
         $this->normalize();
         $items = $this->childNodes;
         $iterator = 0;
+        $empty_fields = ['th', 'td', 'script', 'style', 'canvas', 'textarea', 'progress'];
 
         for (; $iterator < $items->length; $iterator += 1) {
             $item = $items->item($iterator);
 
             $type = $item->nodeType;
 
-            if ($type === XML_COMMENT_NODE || ($type === XML_TEXT_NODE && preg_match('/^[\s\t\r\n]*$/', $item->nodeValue))) {
+            if (in_array($item->nodeName, $empty_fields)) {
+                continue;
+            } else if ($type === XML_COMMENT_NODE || ($type === XML_TEXT_NODE && preg_match('/^[\s\t\r\n]*$/', $item->nodeValue))) {
                 $item->remove();
                 $iterator -= 1;
             } else if ($type === XML_ELEMENT_NODE || $type === XML_DOCUMENT_FRAG_NODE) {
@@ -168,7 +171,7 @@ trait NodeTrait
 
     public function saveSource($filename, $flags = 0, $context = null)
     {
-        file_put_contents($path, $this, $flags, $context);
+        file_put_contents($filename, $this, $flags, $context);
 
         return $this;
     }

@@ -22,7 +22,7 @@ trait NodeTrait
         $this->normalize();
         $items = $this->childNodes;
         $iterator = 0;
-        $empty_fields = ['th', 'td', 'script', 'style', 'canvas', 'textarea', 'progress'];
+        $empty_fields = ['th', 'td', 'script', 'style', 'canvas', 'tbody', 'textarea', 'progress'];
 
         for (; $iterator < $items->length; $iterator += 1) {
             $item = $items->item($iterator);
@@ -94,6 +94,11 @@ trait NodeTrait
         return $node;
     }
 
+    public function after($definition = [])
+    {
+        return $this->parentNode->insert($definition, $this->nextSibling);
+    }
+
     public function prepend($definition = [])
     {
         if ($this->isNode($definition)) {
@@ -131,6 +136,8 @@ trait NodeTrait
         } else {
             $node = $this->ownerDocument->create($definition);
         }
+
+        $node = $this->ownerDocument->importNode($node, true);
 
         if (!empty($this->parentNode)) {
             $this->parentNode->replaceChild($node, $this);

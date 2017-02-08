@@ -9,17 +9,20 @@ https://github.com/Lcfvs/PHPDOM
 namespace PHPDOM\HTML;
 
 final class SelectorCache
-{ 
-    private static $_cache = [];
-    private static $_isUptoDate = true;
-    
+{
+    protected static $_cache;
+    protected static $_isUptoDate = true;
+    protected static $_filename;
+
     private function __construct()
     {}
     
     public static function get($selector)
     {
-        if (array_key_exists($selector, self::$_cache)) {
-            return self::$_cache[$selector];
+        $query = static::$_cache->{$selector} ?? null;
+
+        if ($query) {
+            return $query;
         }
     }
     
@@ -27,58 +30,42 @@ final class SelectorCache
     {
         static::$_isUptoDate = false;
     
-        return self::$_cache[$selector] = $query;
+        return static::$_cache->{$selector} = $query;
     }
     
-    public static function load($filename = null)
+    public static function load($filename)
     {
-        if (is_null($filename)) {
-            $filename = __DIR__ . '/../cache/html-selectors.json';
-        }
-        
-        if (!is_readable($filename)) {
+        if (static::$_filename) {
             return;
         }
-        
-        $cache = json_decode(file_get_contents($filename));
-        
-        if (!is_array($cache)) {
-            $cache = [];
-        }
-        
+
+        static::$_filename = str_replace('\\', '/', $filename);
         static::$_isUptoDate = true;
-        static::$_cache = $cache;
+        static::$_cache = json_decode(@file_get_contents($filename)) ?? new \stdClass();
     }
     
-    public static function clear($filename = null)
+    public static function clear()
     {
-        if (is_null($filename)) {
-            $filename = __DIR__ . '/../cache/html-selectors.json';
-            
-            if (is_file($filename)) {
-                unlink($filename);
-            }
+        if (is_file(static::$_filename)) {
+            unlink(static::$_filename);
         }
         
         static::$_isUptoDate = true;
-        static::$_cache = [];
+        static::$_cache = new \stdClass();
     }
     
-    public static function save($filename = null)
+    public static function save()
     {
         if (static::$_isUptoDate) {
             return;
         }
-        
-        if (is_null($filename)) {
-            $directory = __DIR__ . '/../cache/';
-            $filename = $directory . 'html-selectors.json';
-            
-            if (!is_dir($directory)) {
-                mkdir($directory);
-            }
+
+        $directory = dirname(static::$_filename);
+
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
         }
         
-        file_put_contents($filename, json_encode(static::$_cache));
+        file_put_contents(static::$_filename, json_encode(static::$_cache));
     }
 }

@@ -13,12 +13,13 @@ trait SelectorTrait
 {
     public function query($query)
     {
-        $node_list = $this->ownerDocument->xpath
-            ->evaluate($query, $this);
+        $response = $this->ownerDocument->xpath->evaluate($query, $this);
 
-        if ($node_list instanceof \DOMNodeList) {
-            return new NodeList($node_list);
+        if ($response instanceof \DOMNodeList) {
+            return new NodeList($response);
         }
+
+        return $response;
     }
 
     public function select($selector)
@@ -104,7 +105,7 @@ trait SelectorTrait
             // ~
             $query = preg_replace('/~/', '/following-sibling::', $query);
             // +
-            $query = preg_replace('/\+([_\w-]+[_\w\d-]*)/', '/following-sibling::\1[position()=1]', $query);
+            $query = preg_replace('/^\+([_\w-]+[_\w\d-]*)/', '/following-sibling::\1[position()=1]', $query);
             $query = str_replace(']*', ']', $query);
             $query = str_replace(']/*', ']', $query);
         }

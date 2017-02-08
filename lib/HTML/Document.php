@@ -285,6 +285,11 @@ class Document extends \DOMDocument
         return $script;
     }
 
+    public function query($selector)
+    {
+        return $this->documentElement->query($selector);
+    }
+
     public function select($selector)
     {
         return $this->documentElement->select($selector);

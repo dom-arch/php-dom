@@ -105,7 +105,7 @@ trait SelectorTrait
             // ~
             $query = preg_replace('/~/', '/following-sibling::', $query);
             // +
-            $query = preg_replace('/^\s*\+\s*([_\w-]+[_\w\d-]*)/', '/following-sibling::\1[position()=1]', $query);
+            $query = preg_replace('/\s*\+\s*([_\w-]+[_\w\d-]*)/', '/following-sibling::\1[position()=1]', $query);
             $query = str_replace(']*', ']', $query);
             $query = str_replace(']/*', ']', $query);
         }

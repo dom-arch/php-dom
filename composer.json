@@ -2,7 +2,8 @@
     "name": "dom-arch/php-dom",
     "description": "A PHP DOM tool, based on a revised version of php-selector",
     "require": {
-        "php": ">=5.4"
+        "php": ">=7.0",
+        "carica/phpcss": "^0.5.0"
     },
     "license": "MIT",
     "authors": [
